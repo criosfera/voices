@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voices.cl</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='fav.png') }}">
+</head>
+<body>
+
+    <navbar class="navbar-container">
+        <div class="logo-container">
+            <a href="{{ url_for('inicio') }}">Voces Libres</a>
+        </div>
+
+        <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
+        <ul class="nav-items">
+            <li class="nav-link"><a href="/chapter/1/page/1">Libro</a></li>
+            <li class="nav-link"><a href="#">Reuniones</a></li>
+            <li class="nav-link"><a href="#">Colaboradores</a></li>
+            <li class="nav-link"><a href="#">Contacto</a></li>
+        </ul>
+    </navbar>
+    <navbar class="navbar-txt">
+        El libro de las voces de libertad,
+         buscando promulgar el conocimiento de los iluminados y el saber espiritual.
+    </navbar>
+    
+    <div class="main">
+        
+        <table>
+            <tbody>
+            <tr>
+            <td><a href="/chapter/1/page/1">LEER EL LIBRO</a></td>
+            </tr>
+            <tr>
+            <td>CONTENIDO EN CONSTRUCCION...</td>
+            </tr>
+            </tbody>
+            </table>
+    </div>
+
+    
+
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

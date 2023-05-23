@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+    <title>Capitulo {{ current_chapter }}
+        - Pagina {{ current_page }}</title>
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='libro.css') }}">
+</head>
+<body>
+    
+    
+    <navbar class="navbar-container">
+        <div class="logo-container">
+            <a href="{{ url_for('inicio') }}">Voces Libres - [ Volver a la pagina principal ] </a>
+        </div>
+
+        <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
+        <ul class="nav-items">
+            <li class="nav-link">Capitulo {{ current_chapter }} - Pagina {{ current_page }}</li>
+        </ul>
+    </navbar>
+
+
+    <div class="navigator">
+        {% for i in range(1, 9) %}
+            <span>
+                <a href="/chapter/{{ current_chapter }}/page/{{ i }}">
+                    {{ i }}</a>
+            </span>
+        {% endfor %}
+    </div>
+
+    <div class="content">{{ title }}</div>
+    <div class="content">
+        {{ content }}
+    </div>
+
+    <div class="navigator">
+        {% for i in range(1, 9) %}
+            <span>
+                <a href="/chapter/{{ i }}/page/1">
+                    {{ i }}</a>
+            </span>
+        {% endfor %}
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
