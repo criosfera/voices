@@ -9,7 +9,6 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='fav.png') }}">
 </head>
 <body>
-
     <navbar class="navbar-container">
         <div class="logo-container">
             <a href="{{ url_for('inicio') }}">Voces Libres</a>
@@ -26,29 +25,30 @@
             <li class="nav-link"><a href="#">Reuniones</a></li>
             <li class="nav-link"><a href="#">Colaboradores</a></li>
             <li class="nav-link"><a href="#">Contacto</a></li>
+            <li>
+                {% if not logged_in %}
+                <p>Ingresar</p>
+                <form method="POST" action="{{ url_for('login') }}">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                {% else %}
+                <h2>Bienvenido Editor</h2>
+                <li class="nav-link"><a href="/chapter/1/page/1">Libro</a></li> <br> <br>
+                <a href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
+            </li>
         </ul>
     </navbar>
     <navbar class="navbar-txt">
-        El libro de las voces de libertad,
-         buscando promulgar el conocimiento de los iluminados y el saber espiritual.
+        El libro de las voces de libertad, buscando promulgar el conocimiento de los iluminados y el saber espiritual.
     </navbar>
-    
+
     <div class="main">
+        <h2>En los brazos de Xois</h2><br><br>
         
-        <table>
-            <tbody>
-            <tr>
-            <td><a href="/chapter/1/page/1">LEER</a></td>
-            </tr>
-            <tr>
-            <td>El arte de indefinido.</td>
-            </tr>
-            </tbody>
-            </table>
     </div>
-
-    
-
 
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>

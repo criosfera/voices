@@ -162,6 +162,11 @@ a
     text-align: center;
 }
 
+input 
+{
+    width: 100px;
+}
+
 /* Adjustment for ipad screens */
 
 @media(max-width: 1000px) 

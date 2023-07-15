@@ -2,19 +2,36 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1">
-    <title>Capitulo {{ current_chapter }}
-        - Pagina {{ current_page }}</title>
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='libro.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Capitulo {{ current_chapter }} - Pagina {{ current_page }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='libro.css') }}">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    
-    
     <navbar class="navbar-container">
         <div class="logo-container">
-            <a href="{{ url_for('inicio') }}">El arte de indefinido </a>
+            <a href="{{ url_for('inicio') }}">En los brazos de Xois</a>
         </div>
 
         <div class="bars">
@@ -28,31 +45,109 @@
         </ul>
     </navbar>
 
-
     <div class="navigator">
         Paginas
         {% for i in range(1, 9) %}
             <span>
-                <a href="/chapter/{{ current_chapter }}/page/{{ i }}">
-                    {{ i }}</a>
+                <a href="/chapter/{{ current_chapter }}/page/{{ i }}">{{ i }}</a>
             </span>
         {% endfor %}
     </div>
 
-    <div class="content">{{ title }}</div>
     <div class="content">
-        {{ content }}
+        <h2>{{ title }}</h2>
+    </div>
+
+    <div class="content">
+        {% if logged_in and edit_mode %}
+            <h2>Editar</h2>
+            <form id="editForm" method="POST" action="{{ url_for('chapter_page', chapter_id=current_chapter, page_id=current_page) }}">
+                <textarea name="content" rows="30" cols="150">{{ content }}</textarea>
+                <br>
+                <button type="button" onclick="saveChanges()">Guardar</button>
+            </form>
+        {% else %}
+            {% for paragraph in content.split('\n') %}
+                {% if paragraph.strip() %}
+                    <p>{{ paragraph }}</p>
+                {% endif %}
+            {% endfor %}
+            {% if logged_in %}
+                <br>
+                <button onclick="enableEditMode()">Edit</button>
+            {% endif %}
+        {% endif %}
     </div>
 
     <div class="navigator">
         Capitulos
         {% for i in range(1, 9) %}
             <span>
-                <a href="/chapter/{{ i }}/page/1">
-                    {{ i }}</a>
+                <a href="/chapter/{{ i }}/page/1">{{ i }}</a>
             </span>
         {% endfor %}
     </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <h3>Modificaciones Guardadas</h3>
+            <button onclick="hideModal()">OK</button>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script>
+        function enableEditMode() {
+            var contentElement = document.querySelector('.content p');
+            var textareaElement = document.createElement('textarea');
+            textareaElement.name = 'content';
+            textareaElement.rows = 30;
+            textareaElement.cols = 150;
+            textareaElement.value = contentElement.innerHTML.replace(/<br>/g, '\n');
+            contentElement.parentNode.replaceChild(textareaElement, contentElement);
+
+            var editButton = document.querySelector('.content button');
+            editButton.style.display = 'none';
+
+            var saveButton = document.createElement('button');
+            saveButton.type = 'button';
+            saveButton.innerHTML = 'Save';
+            saveButton.addEventListener('click', function() {
+                showModal();
+            });
+            textareaElement.parentNode.appendChild(saveButton);
+        }
+
+        function saveChanges() {
+            var form = document.getElementById('editForm');
+            var formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        showModal();
+                    } else {
+                        console.error('Error saving changes.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving changes:', error);
+                });
+        }
+
+        function showModal() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'block';
+        }
+
+        function hideModal() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+            location.reload(); // Refresh the page after hiding the modal
+        }
+    </script>
 </body>
 </html>
